@@ -1,0 +1,58 @@
+/* Source: https://github.com/azavea/civic-apps/blob/master/waffle.css */
+
+  [data-waffle-url^="https://api.github.com/repos/azavea/nyc-trees"] .card-body {
+    background-color: #C99BE8 !important;
+  }
+  [data-waffle-url^="https://api.github.com/repos/azavea/nyc-trees"] .card-body textarea {
+    background-color: #C99BE8 !important;
+  }
+
+  [data-waffle-url^="https://api.github.com/repos/OpenTreeMap/"] .card-body {
+    background-color: #8BD69D !important;
+  }
+  [data-waffle-url^="https://api.github.com/repos/OpenTreeMap/"] .card-body textarea {
+    background-color: #8BD69D !important;
+  }
+
+  [data-waffle-url^="https://api.github.com/repos/OpenTreeMap/OpenTreeMap-Android"] .card-body {
+    background-color: #F0AE3C !important;
+  }
+  [data-waffle-url^="https://api.github.com/repos/OpenTreeMap/OpenTreeMap-Android"] .card-body textarea {
+    background-color: #F0AE3C !important;
+  }
+
+  [data-waffle-url^="https://api.github.com/repos/azavea/usace"] .card-body {
+    background-color: #FC74E8 !important;
+  }
+  [data-waffle-url^="https://api.github.com/repos/azavea/usace"] .card-body textarea {
+    background-color: #FC74E8 !important;
+  }
+
+  [data-waffle-url^="https://api.github.com/repos/CoastalResilienceNetwork"] .card-body {
+    background-color: #62526E !important;
+    color: #eee !important;
+  }
+  [data-waffle-url^="https://api.github.com/repos/CoastalResilienceNetwork"] .card-body textarea {
+    background-color: #62526E !important;
+    color: #eee !important;
+  }
+
+  [data-waffle-url^="https://api.github.com/repos/azavea/pwd"] .card-body {
+    background-color: #7FD7FA !important;
+  }
+  [data-waffle-url^="https://api.github.com/repos/azavea/pwd"] .card-body textarea {
+    background-color: #7FD7FA !important;
+  }
+  
+  [data-waffle-url^="https://api.github.com/repos/azavea/model-my-watershed"] .card-body {
+    background-color: papayaWhip !important;
+  }
+  [data-waffle-url^="https://api.github.com/repos/azavea/model-my-watershed"] .card-body textarea {
+    background-color: papayaWhip !important;
+  }
+  [data-waffle-url^="https://api.github.com/repos/WikiWatershed/tr-55"] .card-body {
+    background-color: papayaWhip !important;
+  }
+  [data-waffle-url^="https://api.github.com/repos/WikiWatershed/tr-55"] .card-body textarea {
+    background-color: papayaWhip !important;
+  }

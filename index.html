@@ -1,0 +1,60 @@
+<html>
+<head>
+<link type="text/css" rel="stylesheet" href="waffle.css" />
+<link type="text/css" rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" />
+<style type="text/css">
+body { background: #eee; }
+.card-body {
+    float: left;
+    width: 75px;
+    height: 75px;
+    margin-bottom: 1px;
+    background: #fff;
+}
+.card-body:hover {
+    opacity: 0.85;
+    z-index: 0;
+}
+.row { margin: 15px 0; }
+</style>
+</head>
+<body>
+
+<div id="container" class="container-fluid"></div>
+
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/lodash.js/3.8.0/lodash.min.js"></script>
+
+<script type="text/template" id="milestone-tmpl">
+<div class="row">
+    <div class="col-sm-12 col-md-3">
+        <h2><%- milestone %></h2>
+    </div>
+    <div class="col-sm-12 col-md-9">
+        <% _.each(issues, function(issue) { %>
+        <div class="card" data-waffle-url="<%- issue.url %>">
+            <a class="card-body" title="<%- issue.title %>"
+               href="<%- issue.html_url %>"></a>
+        </div>
+        <% }) %>
+    </div>
+</div>
+</script>
+
+<script type="text/javascript">
+function init(issues) {
+    var $container = $('#container'),
+        tmpl = _.template($('#milestone-tmpl').text()),
+        milestones = _.groupBy(issues, 'milestone');
+    _.each(milestones, function(issues, milestone) {
+        $container.append(tmpl({
+            milestone: milestone,
+            issues: issues
+        }));
+    });
+}
+</script>
+
+<script type="text/javascript" src="output/issues.js"></script>
+</body>
+</html>
