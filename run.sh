@@ -3,7 +3,10 @@ set -ex
 
 main() {
     ./main > ./output/issues.json
-    echo 'init(' $(cat ./output/issues.json) ')' > ./output/issues.js
+    echo 'init({ '\
+        '"last_updated": "' $(date) '",' \
+        '"issues":' $(cat ./output/issues.json) \
+        '})' > ./output/issues.js
     exit 0
 }
 

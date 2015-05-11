@@ -20,7 +20,16 @@ body { background: #eee; }
 </head>
 <body>
 
-<div id="container" class="container-fluid"></div>
+<div id="container" class="container-fluid">
+    <div class="row">
+        <div class="col-sm-12">
+            <h1>Issues Grouped By Milestone</h1>
+        </div>
+    </div>
+</div>
+
+<hr />
+<p><em>Last updated <span id="last-updated"></span></em></p>
 
 <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
 <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/lodash.js/3.8.0/lodash.min.js"></script>
@@ -42,16 +51,17 @@ body { background: #eee; }
 </script>
 
 <script type="text/javascript">
-function init(issues) {
+function init(data) {
     var $container = $('#container'),
         tmpl = _.template($('#milestone-tmpl').text()),
-        milestones = _.groupBy(issues, 'milestone');
+        milestones = _.groupBy(data.issues, 'milestone');
     _.each(milestones, function(issues, milestone) {
         $container.append(tmpl({
             milestone: milestone,
             issues: issues
         }));
     });
+    $('#last-updated').text(data.last_updated);
 }
 </script>
 
