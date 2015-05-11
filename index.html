@@ -1,5 +1,6 @@
 <html>
 <head>
+<title>Issues Grouped By Milestone</title>
 <link type="text/css" rel="stylesheet" href="waffle.css" />
 <link type="text/css" rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" />
 <style type="text/css">
@@ -54,7 +55,9 @@ body { background: #eee; }
 function init(data) {
     var $container = $('#container'),
         tmpl = _.template($('#milestone-tmpl').text()),
-        milestones = _.groupBy(data.issues, 'milestone');
+        filteredIssues = _.filter(data.issues, isValidIssue),
+        sortedIssues = reversed(_.sortBy(filteredIssues, 'milestone')),
+        milestones = _.groupBy(sortedIssues, 'milestone');
     _.each(milestones, function(issues, milestone) {
         $container.append(tmpl({
             milestone: milestone,
@@ -62,6 +65,17 @@ function init(data) {
         }));
     });
     $('#last-updated').text(data.last_updated);
+}
+
+function isValidIssue(issue) {
+    // Kind of a hack but we only want to include issues where the milestone
+    // is like "YYYY-MM-DD".
+    return issue.milestone.length === 10;
+}
+
+function reversed(issues) {
+    issues.reverse();
+    return issues;
 }
 </script>
 
