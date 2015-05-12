@@ -5,11 +5,11 @@
 <link type="text/css" rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" />
 <style type="text/css">
 body { background: #eee; }
+h3 { clear: both; }
 .card-body {
     float: left;
     width: 75px;
     height: 75px;
-    margin-bottom: 1px;
     background: #fff;
 }
 .card-body:hover {
@@ -41,11 +41,16 @@ body { background: #eee; }
         <h2><%- milestone %></h2>
     </div>
     <div class="col-sm-12 col-md-9">
-        <% _.each(issues, function(issue) { %>
-        <div class="card" data-waffle-url="<%- issue.url %>">
-            <a class="card-body" title="<%- issue.title %>"
-               href="<%- issue.html_url %>"></a>
-        </div>
+        <% _.each(issuesByStatus, function(issues, status) { %>
+            <div class="col-sm-<%- column_size %>">
+                <h3><%- status %></h3>
+                <% _.each(issues, function(issue) { %>
+                <div class="card" data-waffle-url="<%- issue.url %>">
+                    <a class="card-body" title="<%- issue.title %>"
+                       href="<%- issue.html_url %>"></a>
+                </div>
+                <% }) %>
+            </div>
         <% }) %>
     </div>
 </div>
@@ -55,28 +60,47 @@ body { background: #eee; }
 function init(data) {
     var $container = $('#container'),
         tmpl = _.template($('#milestone-tmpl').text()),
-        filteredIssues = _.filter(data.issues, isValidIssue),
-        sortedIssues = reversed(_.sortBy(filteredIssues, 'milestone')),
-        milestones = _.groupBy(sortedIssues, 'milestone');
-    _.each(milestones, function(issues, milestone) {
+
+        validIssues = _.filter(data.issues, isValidIssue),
+        sortedIssues = reversed(_.sortBy(validIssues, 'milestone')),
+        byMilestone = _.groupBy(sortedIssues, 'milestone'),
+        byStatus = _.mapValues(byMilestone, function(issues) {
+            return _.groupBy(sortedByStatus(issues), 'status');
+        });
+
+    _.each(byStatus, function(issuesByStatus, milestone) {
+        var column_size = Math.floor(12 / _.keys(issuesByStatus).length);
         $container.append(tmpl({
             milestone: milestone,
-            issues: issues
+            issuesByStatus: issuesByStatus,
+            column_size: column_size
         }));
     });
+
     $('#last-updated').text(data.last_updated);
 }
 
 function isValidIssue(issue) {
-    // Kind of a hack but we only want to include issues where the milestone
-    // is like "YYYY-MM-DD".
-    return issue.milestone.length === 10;
+    return /^\d{4}-\d{2}-\d{2}$/.test(issue.milestone);
 }
 
 function reversed(issues) {
     issues.reverse();
     return issues;
 }
+
+function sortedByStatus(issues) {
+    return _.sortBy(issues, function(issue) {
+        switch (issue.status) {
+            case "backlog": return 1;
+            case "queue": return 2;
+            case "in progress": return 3;
+            case "in review": return 4;
+        }
+        return 0;
+    });
+}
+
 </script>
 
 <script type="text/javascript" src="output/issues.js"></script>

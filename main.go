@@ -19,7 +19,7 @@ type issueJsonObj struct {
     Url string `json:"url,omitempty"`
     HtmlUrl string `json:"html_url,omitempty"`
     Milestone string `json:"milestone,omitempty"`
-    Labels []string `json:"labels,omitempty"`
+    Status string `json:"status,omitempty"`
 }
 
 // tokenSource is an oauth2.TokenSource which returns a static access token
@@ -83,15 +83,21 @@ func makeIssuesJson(issues []github.Issue) []issueJsonObj {
             Url: *issue.URL,
             HtmlUrl: *issue.HTMLURL,
             Milestone: *issue.Milestone.Title,
+            Status: getIssueStatus(issue),
         }
-        labels := make([]string, 0)
-        for _, label := range issue.Labels {
-            labels = append(labels, *label.Name)
-        }
-        jsonObj.Labels = labels
         result = append(result, jsonObj)
     }
     return result
+}
+
+func getIssueStatus(issue github.Issue) string {
+    for _, label := range issue.Labels {
+        name := *label.Name
+        if name == "queue" || name == "in progress" || name == "in review" {
+            return name
+        }
+    }
+    return "backlog";
 }
 
 func main() {
