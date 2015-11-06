@@ -13,15 +13,6 @@ type repoTuple struct {
     name string
 }
 
-type issueJsonObj struct {
-    Number int `json:"number,omitempty"`
-    Title string `json:"title,omitempty"`
-    Url string `json:"url,omitempty"`
-    HtmlUrl string `json:"html_url,omitempty"`
-    Milestone string `json:"milestone,omitempty"`
-    Status string `json:"status,omitempty"`
-}
-
 // tokenSource is an oauth2.TokenSource which returns a static access token
 type tokenSource struct {
     token *oauth2.Token
@@ -75,32 +66,6 @@ func fetchIssues(client *github.Client, repo repoTuple) []github.Issue {
     return result
 }
 
-func makeIssuesJson(issues []github.Issue) []issueJsonObj {
-    result := make([]issueJsonObj, 0)
-    for _, issue := range issues {
-        jsonObj := issueJsonObj{
-            Number: *issue.Number,
-            Title: *issue.Title,
-            Url: *issue.URL,
-            HtmlUrl: *issue.HTMLURL,
-            Milestone: *issue.Milestone.Title,
-            Status: getIssueStatus(issue),
-        }
-        result = append(result, jsonObj)
-    }
-    return result
-}
-
-func getIssueStatus(issue github.Issue) string {
-    for _, label := range issue.Labels {
-        name := *label.Name
-        if name == "queue" || name == "in progress" || name == "in review" {
-            return name
-        }
-    }
-    return "backlog";
-}
-
 func main() {
     client := makeClient()
     repos := []repoTuple{
@@ -135,8 +100,7 @@ func main() {
     }
 
     issues := fetchRepoIssues(client, repos)
-    json_issues := makeIssuesJson(issues)
-    output, err := json.Marshal(json_issues)
+    output, err := json.Marshal(issues)
     if err != nil {
         fmt.Println(err)
         return
