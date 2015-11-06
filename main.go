@@ -55,6 +55,7 @@ func fetchIssues(client *github.Client, repo repoTuple) []github.Issue {
     result := make([]github.Issue, 0)
     opt := &github.IssueListByRepoOptions{
         Milestone: "*",
+        // State: "all",
         ListOptions: github.ListOptions{
             PerPage: 30,
         },
