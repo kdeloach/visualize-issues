@@ -16,7 +16,7 @@ h3 { clear: both; }
     opacity: 0.85;
     z-index: 0;
 }
-.row { margin: 15px 0; }
+hr { border-color: #000; }
 </style>
 </head>
 <body>
@@ -27,10 +27,18 @@ h3 { clear: both; }
             <h1>Issues Grouped By Milestone</h1>
         </div>
     </div>
-</div>
 
-<hr />
-<p><em>Last updated <span id="last-updated"></span></em></p>
+    <div id="content">
+    </div>
+
+    <hr />
+
+    <div class="row">
+        <div class="col-sm-12">
+            <p><em>Last updated <span id="last-updated"></span></em></p>
+        </div>
+    </div>
+</div>
 
 <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
 <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/lodash.js/3.8.0/lodash.min.js"></script>
@@ -59,6 +67,7 @@ h3 { clear: both; }
 <script type="text/javascript">
 function init(data) {
     var $container = $('#container'),
+        $content = $container.find('#content'),
         tmpl = _.template($('#milestone-tmpl').text()),
 
         validIssues = _.filter(data.issues, isValidIssue),
@@ -70,7 +79,7 @@ function init(data) {
 
     _.each(byStatus, function(issuesByStatus, milestone) {
         var column_size = Math.floor(12 / _.keys(issuesByStatus).length);
-        $container.append(tmpl({
+        $content.append(tmpl({
             milestone: milestone,
             issuesByStatus: issuesByStatus,
             column_size: column_size
