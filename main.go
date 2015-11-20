@@ -25,7 +25,7 @@ func (t *tokenSource) Token() (*oauth2.Token, error){
 
 func makeClient() *github.Client {
     ts := &tokenSource{
-        &oauth2.Token{AccessToken: "813a87727d1bc0862cd3b1908fb1060fe4b2f3cf"},
+        &oauth2.Token{AccessToken: "<GitHub Access Token here>"},
     }
     tc := oauth2.NewClient(oauth2.NoContext, ts)
     client := github.NewClient(tc)
